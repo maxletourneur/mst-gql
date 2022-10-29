@@ -2400,6 +2400,63 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@maxletou/mst-gql@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@maxletou/mst-gql@workspace:."
+  dependencies:
+    "@babel/core": ^7.14.3
+    "@babel/plugin-proposal-class-properties": ^7.17.12
+    "@babel/plugin-proposal-decorators": ^7.18.2
+    "@babel/plugin-transform-modules-commonjs": ^7.18.2
+    "@babel/preset-env": ^7.18.2
+    "@babel/preset-typescript": ^7.17.12
+    "@babel/register": ^7.17.7
+    "@types/jest": ^27.5.2
+    "@types/lodash": ^4.14.182
+    "@types/pluralize": ^0.0.29
+    "@types/react": ^18.0.15
+    "@types/react-dom": ^18.0.6
+    "@types/throttle-debounce": ^5.0.0
+    "@types/ws": ^8.5.3
+    ansi-colors: ^4.1.3
+    arg: ^5.0.2
+    camelcase: ^6.2.0
+    cosmiconfig: ^7.0.1
+    create-react-app: 5.0.1
+    escape-string-regexp: ^4.0.0
+    fast-json-stable-stringify: ^2.1.0
+    graphql: ^16.5.0
+    graphql-request: ^4.3.0
+    graphql-tag: ^2.12.6
+    graphql-ws: ^5.9.1
+    husky: ^8.0.1
+    jest: ^27.0.6
+    lodash: ^4.17.21
+    microbundle: ^0.15.0
+    mobx: ^6.6.0
+    mobx-react: ^7.5.0
+    mobx-state-tree: ^5.1.5
+    node-fetch: ^2.2.1
+    node-gyp: ^9.0.0
+    pinst: 3.0.0
+    pluralize: ^8.0.0
+    prettier: ^2.6.2
+    pretty-quick: ^3.1.3
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    subscriptions-transport-ws: ^0.11.0
+    syncpack: 8.2.4
+    throttle-debounce: ^5.0.0
+    typescript: ^4.7.3
+  peerDependencies:
+    graphql: 14 - 16
+    mobx: 6
+    mobx-state-tree: 5
+  bin:
+    mst-gql: ./generator/mst-gql-scaffold.js
+  languageName: unknown
+  linkType: soft
+
 "@mischnic/json-sourcemap@npm:^0.1.0":
   version: 0.1.0
   resolution: "@mischnic/json-sourcemap@npm:0.1.0"
@@ -14138,63 +14195,6 @@ __metadata:
   bin:
     mst-gql: ./generator/mst-gql-scaffold.js
   languageName: node
-  linkType: soft
-
-"mst-gql@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "mst-gql@workspace:."
-  dependencies:
-    "@babel/core": ^7.14.3
-    "@babel/plugin-proposal-class-properties": ^7.17.12
-    "@babel/plugin-proposal-decorators": ^7.18.2
-    "@babel/plugin-transform-modules-commonjs": ^7.18.2
-    "@babel/preset-env": ^7.18.2
-    "@babel/preset-typescript": ^7.17.12
-    "@babel/register": ^7.17.7
-    "@types/jest": ^27.5.2
-    "@types/lodash": ^4.14.182
-    "@types/pluralize": ^0.0.29
-    "@types/react": ^18.0.15
-    "@types/react-dom": ^18.0.6
-    "@types/throttle-debounce": ^5.0.0
-    "@types/ws": ^8.5.3
-    ansi-colors: ^4.1.3
-    arg: ^5.0.2
-    camelcase: ^6.2.0
-    cosmiconfig: ^7.0.1
-    create-react-app: 5.0.1
-    escape-string-regexp: ^4.0.0
-    fast-json-stable-stringify: ^2.1.0
-    graphql: ^16.5.0
-    graphql-request: ^4.3.0
-    graphql-tag: ^2.12.6
-    graphql-ws: ^5.9.1
-    husky: ^8.0.1
-    jest: ^27.0.6
-    lodash: ^4.17.21
-    microbundle: ^0.15.0
-    mobx: ^6.6.0
-    mobx-react: ^7.5.0
-    mobx-state-tree: ^5.1.5
-    node-fetch: ^2.2.1
-    node-gyp: ^9.0.0
-    pinst: 3.0.0
-    pluralize: ^8.0.0
-    prettier: ^2.6.2
-    pretty-quick: ^3.1.3
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    subscriptions-transport-ws: ^0.11.0
-    syncpack: 8.2.4
-    throttle-debounce: ^5.0.0
-    typescript: ^4.7.3
-  peerDependencies:
-    graphql: 14 - 16
-    mobx: 6
-    mobx-state-tree: 5
-  bin:
-    mst-gql: ./generator/mst-gql-scaffold.js
-  languageName: unknown
   linkType: soft
 
 "multicast-dns@npm:^7.2.5":

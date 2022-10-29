@@ -8,12 +8,7 @@ const { getIntrospectionQuery } = require("graphql")
 const { can_access_file } = require("./utilities")
 const { LOGGER } = require("./logger")
 
-const exampleAction = `  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))`
+const exampleAction = ``
 
 const reservedGraphqlNames = [
   "Mutation",
@@ -75,7 +70,7 @@ function generate(
 
   function generateModelBase() {
     const entryFile = `\
-import { MSTGQLObject } from "mst-gql"
+import { MSTGQLObject } from "@maxletou/mst-gql"
 
 export const ModelBase = MSTGQLObject
 `
@@ -232,15 +227,43 @@ export const ${name}${enumPostfix}Type = ${handleEnumTypeCore(type)}
       refs
     } = resolveFieldsAndImports(type)
 
+    const nonPrimitiveFieldsArray = modelProperties
+      .split("\n")
+      .reduce((nonPrimitiveFieldsArray, modelProperty) => {
+        if (modelProperty.includes("types.array")) {
+          nonPrimitiveFields.forEach(([fieldName]) => {
+            if (modelProperty.includes(fieldName)) {
+              nonPrimitiveFieldsArray.push(fieldName)
+            }
+          })
+        }
+        return nonPrimitiveFieldsArray
+      }, [])
+
     const { name, origName } = type
     const flowerName = toFirstLower(name)
 
     const entryFile = `${ifTS('import { Instance } from "mobx-state-tree"\n')}\
 import { ${name}ModelBase } from "./${name}Model.base${importPostFix}"
+${nonPrimitiveFields
+  .map(
+    ([fieldName, fieldType]) =>
+      `import { ${fieldType}ModelType } from "./${fieldType}Model"\n`
+  )
+  .join("")}
 
 ${
   format === "ts"
-    ? `/* The TypeScript type of an instance of ${name}Model */\nexport interface ${name}${modelTypePostfix} extends Instance<typeof ${name}Model.Type> {}\n`
+    ? `/* The TypeScript type of an instance of ${name}Model */\nexport interface ${name}${modelTypePostfix} extends Instance<typeof ${name}Model.Type> {
+${nonPrimitiveFields
+  .map(
+    ([fieldName, fieldType]) =>
+      `  ${fieldName}: ${fieldType}ModelType${
+        nonPrimitiveFieldsArray.includes(fieldName) ? "[]" : ""
+      }\n`
+  )
+  .join("")}
+}\n`
     : ""
 }
 ${
@@ -275,7 +298,7 @@ ${
 import { types } from "mobx-state-tree"
 import {${refs.length > 0 ? " MSTGQLRef," : ""} QueryBuilder${
       useTypedRefs ? ", withTypedRefs" : ""
-    } } from "mst-gql"
+    } } from "@maxletou/mst-gql"
 import { ModelBase } from "./ModelBase${importPostFix}"
 ${printRelativeImports(imports)}
 ${
@@ -357,7 +380,7 @@ ${generateFragments(name, primitiveFields, nonPrimitiveFields)}
 
     // Start building out the ModelSelector file
     let contents = header + "\n\n"
-    contents += 'import { QueryBuilder } from "mst-gql"\n'
+    contents += 'import { QueryBuilder } from "@maxletou/mst-gql"\n'
     contents += printRelativeImports(imports)
 
     /** 2) Add the correct type for a TS union to the exports of the ModelSelector file */
@@ -503,7 +526,7 @@ ${generateFragments(name, primitiveFields, nonPrimitiveFields)}
               enumType
             )
           }
-          return result(enumType)
+          return result(enumType, type.kind !== "NON_NULL")
         case "INTERFACE":
         case "UNION":
           return result(
@@ -703,7 +726,7 @@ ${ifTS(`import { ObservableMap } from "mobx"\n`)}\
 import { types } from "mobx-state-tree"
 import { MSTGQLStore, configureStoreMixin${
       format === "ts" ? ", QueryOptions, withTypedRefs" : ""
-    } } from "mst-gql"
+    } } from "@maxletou/mst-gql"
 ${objectTypes
   .map(
     (t) =>
@@ -1043,7 +1066,9 @@ ${optPrefix("\n    // ", sanitizeComment(description))}
       case "NON_NULL":
         return printTsType(type.ofType, name, false, fromUndefineableList)
       case "LIST":
-        return `${printTsType(type.ofType, name, true, canBeUndefined)}[]${canBeUndefined ? " | null" : ""}`
+        return `${printTsType(type.ofType, name, true, canBeUndefined)}[]${
+          canBeUndefined ? " | null" : ""
+        }`
       case "OBJECT":
       case "INPUT_OBJECT":
       case "ENUM":
@@ -1094,7 +1119,7 @@ ${optPrefix("\n    // ", sanitizeComment(description))}
     const contents = `\
 ${header}
 
-import { createStoreContext, createUseQueryHook } from "mst-gql"
+import { createStoreContext, createUseQueryHook } from "@maxletou/mst-gql"
 import * as React from "react"
 ${
   format === "ts"
