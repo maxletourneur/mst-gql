@@ -72,7 +72,9 @@ exports.mergeConfigs = function mergeConfigs(args, config) {
       !!args["--useIdentifierNumber"] || config.useIdentifierNumber,
     fieldOverrides: args["--fieldOverrides"]
       ? parseFieldOverrides(args["--fieldOverrides"])
-      : config.fieldOverrides,
+      : config.fieldOverrides
+      ? parseFieldOverrides(config.fieldOverrides)
+      : [],
     dynamicArgs: !!args["--dynamicArgs"] || config.dynamicArgs,
     debug: !!args["--debug"] || config.debug,
     disableLogColors: !!args["--disableLogColors"] || config.disableLogColors
@@ -80,8 +82,11 @@ exports.mergeConfigs = function mergeConfigs(args, config) {
 }
 
 const parseFieldOverrides = (fieldOverrides) => {
-  return fieldOverrides
-    .split(",")
+  const _fieldOverrides = Array.isArray(fieldOverrides)
+    ? fieldOverrides
+    : fieldOverrides.split(",")
+
+  return _fieldOverrides
     .map((s) => s.trim())
     .map((item) => {
       const override = item.split(":").map((s) => s.trim())
